@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using ASPCoreTutorial.Model;
 using Microsoft.EntityFrameworkCore;
 
 namespace ASPCoreTutorial
@@ -17,7 +18,6 @@ namespace ASPCoreTutorial
             //Query10();
             //Query11();
             //Query12();
-            //Query13();
             using var db = new SchoolContext();
             var query = db.Student
                 .Include(x => x.Enrollments)
@@ -134,21 +134,21 @@ namespace ASPCoreTutorial
                 Console.WriteLine(item.FirstMidName + item.InstructorCount);
             }
         }
-        private static void Query12()
-        {
-            using var db = new SchoolContext();
-            var result122 = db.Enrollment.GroupBy(x => x.Grade)
-                .Select(x => new StudentModel()
-                {
-                    Grade = x.Key,
-                    GradeCount = x.Count(),
-                });
-            Console.WriteLine("12. Count student for each grade");
-            foreach (var item in result122)
-            {
-                Console.WriteLine(item.Grade + item.GradeCount);
-            }
-        }
+        //private static void Query12()
+        //{
+        //    using var db = new SchoolContext();
+        //    var result122 = db.Enrollment.GroupBy(x => x.Grade)
+        //        .Select(x => new StudentModel()
+        //        {
+        //            Grade = x.Key,
+        //            GradeCount = x.Count(),
+        //        });
+        //    Console.WriteLine("12. Count student for each grade");
+        //    foreach (var item in result122)
+        //    {
+        //        Console.WriteLine(item.Grade + item.GradeCount);
+        //    }
+        //}
         private static void CreateDatabase()
         {
             using var db = new SchoolContext();
