@@ -161,6 +161,50 @@ namespace ASPCoreTutorial
             dotnet ef migrations list
              */
         }
+
+        //private static void AddNewInstructor()
+        //{
+        //    using (var context = new SchoolContext())
+        //    {
+        //        var instructor = context.Instructor.Include(x => x.OfficeAssignment).First();
+        //        var officeAssignment = new OfficeAssignment {Location = "ABC"};
+
+        //        instructor.OfficeAssignment.Add(officeAssignment);
+        //        context.SaveChanges();
+        //    }
+        //}
+        private static void AddNewDepartment()
+        {
+            using (var context = new SchoolContext())
+            {
+                var department = new Department
+                {
+                    Name = "Test",
+                    Budget = 200000,
+                    StartDate = DateTime.Now,
+                    Courses = new List<Course>
+                    {
+                        new Course { Title = "-Test1", Credits = 12000},
+                        new Course { Title = "-Test2", Credits = 12000},
+                        new Course { Title = "-Test3", Credits = 12000 }
+                    }
+                };
+
+                context.Department.Add(department);
+                context.SaveChanges();
+            }
+        }
+        private static void RemoveDepartment()
+        {
+            using (var context = new SchoolContext())
+            {
+                var department = context.Department.Include(x => x.Courses).First();
+                var courses = department.Courses.First();
+
+                department.Courses.Remove(courses);
+                context.SaveChanges();
+            }
+        }
         public static void Show(IQueryable<string> result)
         {
             foreach (var item in result)
