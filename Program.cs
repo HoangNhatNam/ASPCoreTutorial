@@ -17,7 +17,7 @@ namespace ASPCoreTutorial
             //Query10();
             //Query11();
             //Query12();
-            //Query12();
+            //Query13();
             using var db = new SchoolContext();
             var query = db.Student
                 .Include(x => x.Enrollments)
