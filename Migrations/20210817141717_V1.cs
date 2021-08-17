@@ -495,5 +495,6 @@ namespace ASPCoreTutorial.Migrations
                 principalColumn: "ID",
                 onDelete: ReferentialAction.Cascade);
         }
+
     }
 }

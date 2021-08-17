@@ -4,14 +4,16 @@ using ASPCoreTutorial;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace ASPCoreTutorial.Migrations
 {
     [DbContext(typeof(SchoolContext))]
-    partial class SchoolContextModelSnapshot : ModelSnapshot
+    [Migration("20210817152059_V2")]
+    partial class V2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -48,15 +50,15 @@ namespace ASPCoreTutorial.Migrations
 
             modelBuilder.Entity("ASPCoreTutorial.Model.CourseAssignment", b =>
                 {
-                    b.Property<int?>("CourseID")
+                    b.Property<int>("CourseID")
                         .HasColumnType("int")
                         .HasColumnName("course_id");
 
-                    b.Property<int?>("InstructorID")
+                    b.Property<int>("InstructorID")
                         .HasColumnType("int")
                         .HasColumnName("instructor_id");
 
-                    b.HasKey("CourseID", "InstructorID");
+                    b.HasKey("CourseID");
 
                     b.HasIndex("InstructorID");
 

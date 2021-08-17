@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Security.Cryptography.X509Certificates;
 using ASPCoreTutorial.Model;
 using Microsoft.EntityFrameworkCore;
 
@@ -87,7 +88,7 @@ namespace ASPCoreTutorial
 
             modelBuilder.Entity<CourseAssignment>(
                 eb => {
-                    eb.ToTable("CourseAssignment").HasKey(x => x.CourseID);
+                    eb.ToTable("CourseAssignment").HasKey(x => new { x.CourseID, x.InstructorID });
                     eb.HasOne(x => x.Instructor).WithMany(i => i.CourseAssignment).HasForeignKey(c => c.InstructorID).HasPrincipalKey(i => i.ID);
                     eb.HasOne(x => x.Course).WithMany(c => c.CourseAssignment).HasForeignKey(c => c.CourseID).HasPrincipalKey(c => c.CourseID);
                     eb.Property(x => x.CourseID).HasColumnName("course_id");
@@ -141,14 +142,15 @@ namespace ASPCoreTutorial
                 new { ID = 4, LastName = "Chi", FirstMidName = "Thoai", HireDate = DateTime.Now }
             );
             modelBuilder.Entity<Department>().HasData(
-                new { DepartmentID = 1, Name = "English", Budget = 3000000, StartDate = DateTime.Now, InstructorID = 1 },
-                new { DepartmentID = 2, Name = "Computer Science", Budget = 3000000, StartDate = DateTime.Now, InstructorID = 2 },
-                new { DepartmentID = 3, Name = "Scince", Budget = 3000000, StartDate = DateTime.Now, InstructorID = 3 },
-                new { DepartmentID = 4, Name = "Social Studies", Budget = 3000000, StartDate = DateTime.Now, InstructorID = 1 },
-                new { DepartmentID = 5, Name = "Theology", Budget = 3000000, StartDate = DateTime.Now, InstructorID = 2 },
-                new { DepartmentID = 6, Name = "Mathematics", Budget = 3000000, StartDate = DateTime.Now, InstructorID = 3 },
-                new { DepartmentID = 7, Name = "IT", Budget = 3000000, StartDate = DateTime.Now, InstructorID = 1 }
+                new { DepartmentID = 1, Name = "English", Budget = 3000000m, StartDate = DateTime.Now, InstructorID = 1 },
+                new { DepartmentID = 2, Name = "Computer Science", Budget = 3000000m, StartDate = DateTime.Now, InstructorID = 2 },
+                new { DepartmentID = 3, Name = "Scince", Budget = 3000000m, StartDate = DateTime.Now, InstructorID = 3 },
+                new { DepartmentID = 4, Name = "Social Studies", Budget = 3000000m, StartDate = DateTime.Now, InstructorID = 1 },
+                new { DepartmentID = 5, Name = "Theology", Budget = 3000000m, StartDate = DateTime.Now, InstructorID = 2 },
+                new { DepartmentID = 6, Name = "Mathematics", Budget = 3000000m, StartDate = DateTime.Now, InstructorID = 3 },
+                new { DepartmentID = 7, Name = "IT", Budget = 3000000m, StartDate = DateTime.Now, InstructorID = 1 }
             );
         }
     }
+
 }

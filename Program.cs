@@ -10,7 +10,7 @@ namespace ASPCoreTutorial
     {
         private static void Main()
         {
-            //Query1();
+            Query1();
             //Query2();
             //Query6();
             //Query8();
