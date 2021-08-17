@@ -211,7 +211,7 @@ namespace ASPCoreTutorial
         {
             using (var context = new SchoolContext())
             {
-                var student = context.Student.First(x => x.ID == id);
+                var student = context.Student.Find(id);
                 student.LastName = "Test";
                 student.FirstMidName = "Test";
                 context.SaveChanges();
@@ -221,7 +221,7 @@ namespace ASPCoreTutorial
         {
             using (var context = new SchoolContext())
             {
-                var student = context.Student.First(x => x.ID == id);
+                var student = context.Student.Find(id);
                 context.Student.Remove(student);
                 context.SaveChanges();
             }
