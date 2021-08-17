@@ -18,12 +18,7 @@ namespace ASPCoreTutorial
             //Query10();
             //Query11();
             //Query12();
-            using var db = new SchoolContext();
-            var query = db.Student
-                .Include(x => x.Enrollments)
-                .ThenInclude(x => x.Course)
-                .ThenInclude(x => x.Department)
-                .ToList();
+            
         }
 
         /// <summary>
@@ -157,8 +152,12 @@ namespace ASPCoreTutorial
         private static void CreateWithMigra()
         {
             /*
-             dotnet ef migrations add MigrationName
+            dotnet ef migrations add MigrationName
             dotnet ef migrations list
+            dotnet ef migrations remove
+
+            dotnet ef database update MigrationName
+            dotnet database drop -f
              */
         }
 

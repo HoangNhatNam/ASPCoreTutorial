@@ -15,3 +15,4 @@ namespace ASPCoreTutorial.Model
         public string FirstMidName { get; set; }
 
     }
+}

@@ -26,53 +26,103 @@ namespace ASPCoreTutorial
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlServer(
-                @"Server=LAPTOP-N65FQACU\SQLEXPRESS;Database=SchoolDB1;Trusted_Connection=True;");
+                @"Server=LAPTOP-N65FQACU\SQLEXPRESS;Database=SchoolDB2;Trusted_Connection=True;");
 
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-            modelBuilder.Entity<Course>()
-                .ToTable("Course")
-                .HasKey(c => c.CourseID);
+            modelBuilder.Entity<Course>(
+                eb =>
+                {
+                    eb.ToTable("Course").HasKey(x => x.CourseID);
+                    eb.HasOne(x => x.Department).WithMany(d => d.Courses).HasForeignKey(c => c.DepartmentID).HasPrincipalKey(d => d.DepartmentID);
+                    eb.Property(x => x.CourseID).HasColumnName("course_id");
+                    eb.Property(x => x.Title).HasColumnName("title");
+                    eb.Property(x => x.Credits).HasColumnName("credits");
+                    eb.Property(x => x.DepartmentID).HasColumnName("department_id");
+                });
 
-            modelBuilder.Entity<Course>()
-                .HasOne(c => c.Department)
-                .WithMany(d => d.Courses)
-                .HasForeignKey(c => c.DepartmentID)
-                .HasPrincipalKey(d => d.DepartmentID);
+            modelBuilder.Entity<Enrollment>(
+                eb =>
+                {
+                    eb.ToTable("Enrollment").HasKey(x => x.EnrollmentID);
+                    eb.HasOne(x => x.Course).WithMany(c => c.Enrollments).HasForeignKey(e => e.CourseID).HasPrincipalKey(c => c.CourseID);
+                    eb.HasOne(x => x.Student).WithMany(s => s.Enrollments).HasForeignKey(e => e.StudentID).HasPrincipalKey(s => s.ID);
+                    eb.Property(x => x.EnrollmentID).HasColumnName("enrollment_id");
+                    eb.Property(x => x.CourseID).HasColumnName("course_id");
+                    eb.Property(x => x.StudentID).HasColumnName("student_id");
+                    eb.Property(x => x.Grade).HasColumnName("grade");
+                });
 
-            modelBuilder.Entity<Enrollment>()
-                .ToTable("Enrollment")
-                .HasKey(e => e.EnrollmentID);
+            modelBuilder.Entity<Instructor>(
+                eb =>
+                {
+                    eb.ToTable("Instructor").HasKey(x => x.ID);
+                    eb.HasOne(x => x.OfficeAssignment).WithOne(o => o.Instructor).HasForeignKey<OfficeAssignment>(i => i.InstructorID);
+                    eb.Property(x => x.ID).HasColumnName("instructor_id");
+                    eb.Property(x => x.LastName).HasColumnName("last_name");
+                    eb.Property(x => x.FirstMidName).HasColumnName("first_mid_name");
+                    eb.Property(x => x.HireDate).HasColumnName("hire_date");
+                });
 
-            modelBuilder.Entity<Instructor>()
-                .ToTable("Instructor")
-                .HasKey(i => i.ID);
+            modelBuilder.Entity<OfficeAssignment>(
+                eb =>
+                {
+                    eb.ToTable("OfficeAssignment").HasKey(x => x.InstructorID);
+                    eb.Property(x => x.InstructorID).HasColumnName("instructor_id");
+                    eb.Property(x => x.Location).HasColumnName("location");
+                });
 
-            modelBuilder.Entity<Instructor>()
-                .HasOne(i => i.OfficeAssignment)
-                .WithOne(o => o.Instructor)
-                .HasForeignKey<OfficeAssignment>(i => i.InstructorID);
-
-            modelBuilder.Entity<OfficeAssignment>()
-                .ToTable("OfficeAssignment")
-                .HasKey(o => o.InstructorID);
 
             modelBuilder.Entity<Student>(
                 eb =>
                 {
-                    eb.ToTable("Student").HasKey(student => student.ID);
-                    eb.Ignore(student => student.FullName);
+                    eb.ToTable("Student").HasKey(x => x.ID);
+                    eb.Property(x => x.ID).HasColumnName("student_id");
+                    eb.Property(x => x.LastName).HasColumnName("last_name");
+                    eb.Property(x => x.FirstMidName).HasColumnName("first_mid_name");
+                    eb.Property(x => x.EnrollmentDate).HasColumnName("enrollment_date");
                 });
 
-            modelBuilder.Entity<CourseAssignment>()
-                .ToTable("CourseAssignment")
-                .HasKey(c => new { c.CourseID, c.InstructorID });
+            modelBuilder.Entity<CourseAssignment>(
+                eb => {
+                    eb.ToTable("CourseAssignment").HasKey(x => x.CourseID);
+                    eb.HasOne(x => x.Instructor).WithMany(i => i.CourseAssignment).HasForeignKey(c => c.InstructorID).HasPrincipalKey(i => i.ID);
+                    eb.HasOne(x => x.Course).WithMany(c => c.CourseAssignment).HasForeignKey(c => c.CourseID).HasPrincipalKey(c => c.CourseID);
+                    eb.Property(x => x.CourseID).HasColumnName("course_id");
+                    eb.Property(x => x.InstructorID).HasColumnName("instructor_id");
+                });
 
-            modelBuilder.Entity<Department>()
-                .ToTable("Department")
-                .HasKey(d => d.DepartmentID);
+            modelBuilder.Entity<Department>(
+                eb => {
+                    eb.ToTable("Department").HasKey(x => x.DepartmentID);
+                    eb.HasOne(x => x.Instructor).WithMany().HasForeignKey(d => d.InstructorID);
+                    eb.Property(x => x.DepartmentID).HasColumnName("department_id");
+                    eb.Property(x => x.Name).HasColumnName("name");
+                    eb.Property(x => x.Budget).HasColumnName("budget");
+                    eb.Property(x => x.StartDate).HasColumnName("start_date");
+                    eb.Property(x => x.InstructorID).HasColumnName("instructor_id");
+                });
+
+            modelBuilder.Entity<Student>().HasData(
+                new { ID = 1, LastName = "Hoang", FirstMidName = "Nhat Nam", EnrollmentDate = DateTime.Now },
+                new { ID = 2, LastName = "Thi", FirstMidName = "Nhat Minh", EnrollmentDate = DateTime.Now },
+                new { ID = 3, LastName = "Ngo", FirstMidName = "Viet Hung", EnrollmentDate = DateTime.Now },
+                new { ID = 4, LastName = "Luu", FirstMidName = "Duc Thai", EnrollmentDate = DateTime.Now }
+                );
+            modelBuilder.Entity<Enrollment>().HasData(
+                new { EnrollmentID = 1, CourseID = 2, StudentID = 1, Grade = 2 },
+                new { EnrollmentID = 2, CourseID = 1, StudentID = 2, Grade = 1 },
+                new { EnrollmentID = 3, CourseID = 3, StudentID = 3, Grade = 3 },
+                new { EnrollmentID = 4, CourseID = 4, StudentID = 4, Grade = 2 }
+            );
+            modelBuilder.Entity<Course>().HasData(
+                new { CourseID = 1, Title = "", Credits = 2000000, DepartmentID = 1 },
+                new { CourseID = 2, Title = "", Credits = 3000000, DepartmentID = 3 },
+                new { CourseID = 3, Title = "", Credits = 4000000, DepartmentID = 4 },
+                new { CourseID = 4, Title = "", Credits = 5000000, DepartmentID = 2 }
+            );
         }
     }
 }
