@@ -193,6 +193,39 @@ namespace ASPCoreTutorial
                 context.SaveChanges();
             }
         }
+        private static void AddNewStudent()
+        {
+            using (var context = new SchoolContext())
+            {
+                var student = new Student
+                {
+                    LastName = "Test",
+                    FirstMidName = "Test",
+                    EnrollmentDate = DateTime.Now
+                };
+                context.Student.Add(student);
+                context.SaveChanges();
+            }
+        }
+        private static void UpdateStudent(int id)
+        {
+            using (var context = new SchoolContext())
+            {
+                var student = context.Student.First(x => x.ID == id);
+                student.LastName = "Test";
+                student.FirstMidName = "Test";
+                context.SaveChanges();
+            }
+        }
+        private static void DeleteStudent(int id)
+        {
+            using (var context = new SchoolContext())
+            {
+                var student = context.Student.First(x => x.ID == id);
+                context.Student.Remove(student);
+                context.SaveChanges();
+            }
+        }
         private static void RemoveDepartment()
         {
             using (var context = new SchoolContext())
