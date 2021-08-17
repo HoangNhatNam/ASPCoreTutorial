@@ -113,15 +113,41 @@ namespace ASPCoreTutorial
                 );
             modelBuilder.Entity<Enrollment>().HasData(
                 new { EnrollmentID = 1, CourseID = 2, StudentID = 1, Grade = 2 },
-                new { EnrollmentID = 2, CourseID = 1, StudentID = 2, Grade = 1 },
-                new { EnrollmentID = 3, CourseID = 3, StudentID = 3, Grade = 3 },
-                new { EnrollmentID = 4, CourseID = 4, StudentID = 4, Grade = 2 }
+                new { EnrollmentID = 2, CourseID = 3, StudentID = 1, Grade = 1 },
+                new { EnrollmentID = 3, CourseID = 4, StudentID = 2, Grade = 3 },
+                new { EnrollmentID = 4, CourseID = 5, StudentID = 2, Grade = 2 },
+                new { EnrollmentID = 5, CourseID = 1, StudentID = 3, Grade = 4 },
+                new { EnrollmentID = 6, CourseID = 2, StudentID = 3, Grade = 2 },
+                new { EnrollmentID = 7, CourseID = 4, StudentID = 3, Grade = 4 }
             );
             modelBuilder.Entity<Course>().HasData(
-                new { CourseID = 1, Title = "", Credits = 2000000, DepartmentID = 1 },
-                new { CourseID = 2, Title = "", Credits = 3000000, DepartmentID = 3 },
-                new { CourseID = 3, Title = "", Credits = 4000000, DepartmentID = 4 },
-                new { CourseID = 4, Title = "", Credits = 5000000, DepartmentID = 2 }
+                new { CourseID = 1, Title = "Thiet ke mau", Credits = 2000000, DepartmentID = 7 },
+                new { CourseID = 2, Title = "Giao duc the chat", Credits = 3000000, DepartmentID = 2 },
+                new { CourseID = 3, Title = "Quoc phong", Credits = 4000000, DepartmentID = 3 },
+                new { CourseID = 4, Title = "Thiet ke web", Credits = 5000000, DepartmentID = 7 },
+                new { CourseID = 5, Title = "Quan tri co so du lieu", Credits = 5000000, DepartmentID = 7 }
+            );
+            modelBuilder.Entity<CourseAssignment>().HasData(
+                new { CourseID = 1, InstructorID = 2 },
+                new { CourseID = 5, InstructorID = 1 },
+                new { CourseID = 3, InstructorID = 2 },
+                new { CourseID = 2, InstructorID = 3 },
+                new { CourseID = 4, InstructorID = 1 }
+            );
+            modelBuilder.Entity<Instructor>().HasData(
+                new { ID = 1, LastName = "Thach", FirstMidName = "Son Kim Quang", HireDate = DateTime.Now },
+                new { ID = 2, LastName = "Vo", FirstMidName = "Ngoc Tam", HireDate = DateTime.Now },
+                new { ID = 3, LastName = "Nguyen", FirstMidName = "Van A", HireDate = DateTime.Now },
+                new { ID = 4, LastName = "Chi", FirstMidName = "Thoai", HireDate = DateTime.Now }
+            );
+            modelBuilder.Entity<Department>().HasData(
+                new { DepartmentID = 1, Name = "English", Budget = 3000000, StartDate = DateTime.Now, InstructorID = 1 },
+                new { DepartmentID = 2, Name = "Computer Science", Budget = 3000000, StartDate = DateTime.Now, InstructorID = 2 },
+                new { DepartmentID = 3, Name = "Scince", Budget = 3000000, StartDate = DateTime.Now, InstructorID = 3 },
+                new { DepartmentID = 4, Name = "Social Studies", Budget = 3000000, StartDate = DateTime.Now, InstructorID = 1 },
+                new { DepartmentID = 5, Name = "Theology", Budget = 3000000, StartDate = DateTime.Now, InstructorID = 2 },
+                new { DepartmentID = 6, Name = "Mathematics", Budget = 3000000, StartDate = DateTime.Now, InstructorID = 3 },
+                new { DepartmentID = 7, Name = "IT", Budget = 3000000, StartDate = DateTime.Now, InstructorID = 1 }
             );
         }
     }
